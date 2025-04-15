@@ -1,0 +1,8 @@
+sylius_systempay_plugin:
+  form:
+    user: "User"
+    test_password: "Test password"
+    prod_password: "Production password"
+    mode: "Mode"
+    public_test_key: "Public test key"
+    hmac_sha_256_test: "HMAC SHA256 test"

@@ -51,7 +51,7 @@ final class SystempayConfigurationType extends AbstractType
     {
         $resolver->setDefaults([
             'entry_type' => null,
-            'translation_domain' => 'form',
+            'translation_domain' => 'systempay.admin.form',
         ]);
     }
 }
