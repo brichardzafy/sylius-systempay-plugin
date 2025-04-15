@@ -6,3 +6,4 @@ sylius_systempay_plugin:
     mode: "Mode"
     public_test_key: "Public test key"
     hmac_sha_256_test: "HMAC SHA256 test"
+    public_key: "Public key"
