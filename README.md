@@ -17,115 +17,41 @@ The goal of this documentation is to show how to make it in a Sylius project.
 
 ## Quickstart Installation
 
-Run `git clone  ProjectName`.
+Run `git clone https://github.com/brichardzafy/sylius-systempay-plugin ProjectDir/src/Plugins/sylius-systempay-plugin`.
 
 ### Traditional
 
-1. From the plugin skeleton root directory, run the following commands:
-
+1. In the composer.json of your project, add two lines :
+   
     ```bash
-    $ (cd tests/Application && yarn install)
-    $ (cd tests/Application && yarn build)
-    $ (cd tests/Application && APP_ENV=test bin/console assets:install public)
-
-    $ (cd tests/Application && APP_ENV=test bin/console doctrine:database:create)
-    $ (cd tests/Application && APP_ENV=test bin/console doctrine:schema:create)
-    # Optionally load data fixtures
-    $ (cd tests/Application && APP_ENV=test bin/console sylius:fixtures:load --no-interaction)
+      require : {..., "lyracom/rest-php-sdk": "4.0.0" },
+      "autoload": {
+        "psr-4": {
+            ...,
+            "Sylius\\SystempayPlugin\\": "src/Plugin/sylius-systempay-plugin/src/"
+        }
+      },
     ```
 
-To be able to set up a plugin's database, remember to configure your database credentials in `tests/Application/.env` and `tests/Application/.env.test`.
+To enable support for these configurations in the project
 
-2. Run your local server:
+2. Run :
 
       ```bash
-      symfony server:ca:install
-      APP_ENV=test symfony server:start --dir=tests/Application/public --daemon
+      composer update
       ```
 
-3. Open your browser and navigate to `https://localhost:8000`.
-
-### Docker
-
-1. Execute `make init` to initialize the container and install the dependencies.
-
-2. Execute `make database-init` to create the database and run migrations.
-
-3. (Optional) Execute `make load-fixtures` to load the fixtures.
-
-4. Your app is available at `http://localhost`.
-
-## Usage
-
-### Running plugin tests
-
-  - PHPUnit
-
-    ```bash
-    vendor/bin/phpunit
-    ```
-
-  - PHPSpec
-
-    ```bash
-    vendor/bin/phpspec run
-    ```
-
-  - Behat (non-JS scenarios)
-
-    ```bash
-    vendor/bin/behat --strict --tags="~@javascript&&~@mink:chromedriver"
-    ```
-
-  - Behat (JS scenarios)
- 
-    1. [Install Symfony CLI command](https://symfony.com/download).
- 
-    2. Start Headless Chrome:
-    
+3. Now, copy the translation form that you can see here
       ```bash
-      google-chrome-stable --enable-automation --disable-background-networking --no-default-browser-check --no-first-run --disable-popup-blocking --disable-default-apps --allow-insecure-localhost --disable-translate --disable-extensions --no-sandbox --enable-features=Metal --headless --remote-debugging-port=9222 --window-size=2880,1800 --proxy-server='direct://' --proxy-bypass-list='*' http://127.0.0.1
+       src/Plugin/sylius-systempay-plugin/src/Resources/translations/form.fr.yaml
       ```
-    
-    3. Install SSL certificates (only once needed) and run test application's webserver on `127.0.0.1:8080`:
-    
+4. As a final step, enable the plugin in the bundle.php file within the project:
       ```bash
-      symfony server:ca:install
-      APP_ENV=test symfony server:start --port=8080 --dir=tests/Application/public --daemon
+        
+        <?php
+
+          return [
+              ...,
+              Sylius\SystempayPlugin\SyliusSystempayPlugin::class => ['all' => true]
+          ];
       ```
-    
-    4. Run Behat:
-    
-      ```bash
-      vendor/bin/behat --strict --tags="@javascript,@mink:chromedriver"
-      ```
-    
-  - Static Analysis
-      
-    - PHPStan
-    
-      ```bash
-      vendor/bin/phpstan analyse -c phpstan.neon -l max src/  
-      ```
-
-  - Coding Standard
-  
-    ```bash
-    vendor/bin/ecs check
-    ```
-
-### Opening Sylius with your plugin
-
-- Using `test` environment:
-
-    ```bash
-    (cd tests/Application && APP_ENV=test bin/console sylius:fixtures:load)
-    (cd tests/Application && APP_ENV=test bin/console server:run -d public)
-    ```
-    
-- Using `dev` environment:
-
-    ```bash
-    (cd tests/Application && APP_ENV=dev bin/console sylius:fixtures:load)
-    (cd tests/Application && APP_ENV=dev bin/console server:run -d public)
-    ```
