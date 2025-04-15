@@ -12,6 +12,11 @@ services:
         autowire: true      # Automatically injects dependencies in your services.
         autoconfigure: true # Automatically registers your services as commands, event subscribers, etc.
 
+    # Controllers are imported separately to make sure services can be injected
+    # as action arguments even if you don't extend any base controller class
+    Sylius\SystempayPlugin\Controller\:
+        resource: '../../Controller'
+        tags: ['controller.service_arguments']
 
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
@@ -56,7 +61,12 @@ services:
             - '@sylius.factory.payum_get_status_action'
             - '@sylius.factory.payum_resolve_next_route'
 
-    
+    # sylius.systempay.controller.ipn:
+    #     public: true
+    #     autowire: true
+    #     class: Sylius\SystempayPlugin\Controller\SystempayIPNController
+    #     tags:
+    #         - { name: controller.service_arguments }
         
     #Form
     # sylius.form.type.checkout_complete:

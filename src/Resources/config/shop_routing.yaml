@@ -1,15 +1,11 @@
 # Delete these routes and define your own shop routes here
 
-# acme_sylius_example_static_welcome:
-#     path: /static-welcome
-#     defaults:
-#         _controller: Sylius\SyliusSystempay\Controller\GreetingController::staticallyGreetAction
+sylius_systempay_ipn_action:
+    path: /systempay/ipn
+    methods: [GET]
+    defaults:
+        _controller: Sylius\SystempayPlugin\Controller\SystempayIPNController::ipnAction
 
-# acme_sylius_example_dynamic_welcome:
-#     path: /dynamic-welcome/{name}
-#     defaults:
-#         _controller: Acme\SyliusExamplePlugin\Controller\GreetingController::dynamicallyGreetAction
-#         name: ~
 
 sylius_shop_checkout_complete:
   path: /checkout/complete
