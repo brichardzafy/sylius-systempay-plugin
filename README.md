@@ -28,24 +28,26 @@ Run `git clone https://github.com/brichardzafy/sylius-systempay-plugin ProjectDi
       "autoload": {
         "psr-4": {
             ...,
-            "Sylius\\SystempayPlugin\\": "src/Plugin/sylius-systempay-plugin/src/"
+            "Sylius\\SystempayPlugin\\": "src/Plugins/sylius-systempay-plugin/src/"
         }
       },
     ```
 
 To enable support for these configurations in the project
 
-2. Run :
+2. Set `Plugins` in the `config/services.yaml` file to exclude
+
+3. Run :
 
       ```bash
       composer update
       ```
 
-3. Now, copy the translation form that you can see here
+4. Now, copy the translation form that you can see here
       ```bash
        src/Plugin/sylius-systempay-plugin/src/Resources/translations/systempay.admin.form.*.yaml
       ```
-4. In the `routes/sylius_shop.yaml` file, put it this way to override the complete action :
+5. In the `routes/sylius_shop.yaml` file, put it this way to override the complete action :
       ```yaml
         sylius_systempay:
           resource: "@SyliusSystempayPlugin/Resources/config/shop_routing.yaml"
@@ -53,7 +55,7 @@ To enable support for these configurations in the project
           requirements:
               _locale: ^[A-Za-z]{2,4}(_([A-Za-z]{4}|[0-9]{3}))?(_([A-Za-z]{2}|[0-9]{3}))?$
       ```      
-5. As a final step, enable the plugin in the `bundle.php` file within the project:
+6. As a final step, enable the plugin in the `bundle.php` file within the project:
       ```php
         
         <?php
