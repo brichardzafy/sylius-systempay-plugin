@@ -38,7 +38,7 @@ final class SyliusSystempayExtension extends AbstractResourceExtension implement
 
     protected function getMigrationsDirectory(): string
     {
-        return '@SyliusSystempayPlugin/src/Migrations';
+        return '@SyliusSystempayPlugin/Migrations';
     }
 
     protected function getNamespacesOfMigrationsExecutedBefore(): array

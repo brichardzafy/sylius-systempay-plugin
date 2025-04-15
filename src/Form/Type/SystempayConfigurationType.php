@@ -18,6 +18,7 @@ final class SystempayConfigurationType extends AbstractType
                 'Mode embarqué' => 0,
                 'Mode pop-in' => 1,
             ],
+            'label' => 'sylius_systempay_plugin.form.public_key',
         ])
         ->add('user', TextType::class, [
             'label' => 'sylius_systempay_plugin.form.user',
@@ -51,7 +52,7 @@ final class SystempayConfigurationType extends AbstractType
     {
         $resolver->setDefaults([
             'entry_type' => null,
-            'translation_domain' => 'systempay.admin.form',
+            'translation_domain' => 'systempay_admin_form',
         ]);
     }
 }
