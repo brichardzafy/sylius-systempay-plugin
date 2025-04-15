@@ -1,0 +1,3 @@
+sylius_systempay_plugin:
+  form:
+    user: "Utilisateur"

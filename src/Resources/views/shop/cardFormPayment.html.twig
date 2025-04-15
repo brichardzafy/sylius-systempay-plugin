@@ -1,0 +1,35 @@
+{% extends '@SyliusShop/Checkout/layout.html.twig' %}
+{% block title %}{{ 'sylius.ui.complete'|trans }} | {{ parent() }}{% endblock %}
+{% block metatags %}
+    <script type="text/javascript"
+        src="https://static.systempay.fr/static/js/krypton-client/V4.0/stable/kr-payment-form.min.js"
+        kr-public-key="{{  formData['publicKey'] }}"
+        kr-post-url-success="{{ redirectUrl }}"
+        kr-language="{{app.locale}}"></script>
+    <link rel="stylesheet" href="https://static.systempay.fr/static/js/krypton-client/V4.0/ext/neon-reset.min.css">
+{% endblock %}
+
+{% block  content %}
+    <div class="kr-smart-form"
+         
+         kr-form-token="{{ formData['formToken'] }}" kr-popin="true">
+
+        <!-- error zone -->
+        <div class="kr-form-error"></div>
+    </div>
+{% endblock %}
+{% block javascripts %}
+    <script src="https://static.systempay.fr/static/js/krypton-client/V4.0/ext/neon.js">
+    {{ sylius_template_event('sylius.shop.layout.javascripts') }}
+    <!-- code Jquery -->
+    <script type="text/javascript">
+    $(document).ready(function() {
+         KR.onLoaded( () => {
+            $(".kr-smart-form-modal-button").hide();
+        });
+        KR.onFormReady( () => {
+            $(".kr-smart-form-modal-button").trigger("click");
+        });
+    });
+    </script>
+{% endblock %}

@@ -1,0 +1,75 @@
+# This file is the entry point to configure your own services.
+# Files in the packages/ subdirectory configure your dependencies.
+
+# Put parameters here that don't need to change on each machine where the app is deployed
+# https://symfony.com/doc/current/best_practices.html#use-parameters-for-application-configuration
+parameters:
+    locale: 'en'
+
+services:
+    # default configuration for services in *this* file
+    _defaults:
+        autowire: true      # Automatically injects dependencies in your services.
+        autoconfigure: true # Automatically registers your services as commands, event subscribers, etc.
+
+
+    # add more service definitions when explicit configuration is needed
+    # please note that last definitions always *replace* previous ones
+
+    sylius.plugin.systempay.gateway_factory_builder:
+        class: Payum\Core\Bridge\Symfony\Builder\GatewayFactoryBuilder
+        arguments: [ Sylius\SystempayPlugin\Payum\Factory\SystempayGatewayFactory ]
+        tags:
+            - { name: payum.gateway_factory_builder, factory: sylius.systempay }
+
+    Sylius\SystempayPlugin\Form\Type\SystempayConfigurationType:
+        tags:
+            - { name: form.type }
+            - { name: sylius.gateway_configuration_type, type: sylius.systempay, label: 'Systempay' }
+    
+    #Actions 
+    Sylius\SystempayPlugin\Payum\Action\CaptureAction:
+        public: true
+        arguments:
+            - '@Twig\Environment'
+        tags:
+            - { name: payum.action, factory: sylius.systempay , alias: payum.action.capture }
+
+    #Payum Controllers
+    Payum\Bundle\PayumBundle\Controller\CaptureController:
+        class: Sylius\SystempayPlugin\Payum\Controller\CaptureController
+
+    Sylius\Component\Resource\Metadata\MetadataInterface:
+        arguments:
+            - 'sylius.order'
+
+    Payum\Bundle\PayumBundle\Controller\PayumController:
+        class: Sylius\SystempayPlugin\Payum\Controller\PayumController
+        public: true
+        arguments:
+            - '@payum'
+            - '@sylius.repository.order'
+            - '@Sylius\Component\Resource\Metadata\MetadataInterface'
+            - '@sylius.resource_controller.request_configuration_factory'
+            - '@sylius.resource_controller.view_handler'
+            - '@router'
+            - '@sylius.factory.payum_get_status_action'
+            - '@sylius.factory.payum_resolve_next_route'
+
+    
+        
+    #Form
+    # sylius.form.type.checkout_complete:
+    #     class: Sylius\SystempayPlugin\Form\Type\SystempayCompleteType
+    #     arguments:
+    #         - '%sylius.model.order.class%'
+    #         - '%sylius.form.type.checkout_complete.validation_groups%'
+    #     tags:
+    #         - { name: form.type, alias: sylius_checkout_complete }
+
+    #event
+    sylius.event_listener.systempay:
+        class: Sylius\SystempayPlugin\EventListener\SystempayOnDisplayForm
+        tags:
+         - { name: kernel.event_listener, event: sylius.order.initialize_complete }
+         - { name: kernel.event_listener, event: "workflow.sylius_order_checkout.completed.select_payment" }

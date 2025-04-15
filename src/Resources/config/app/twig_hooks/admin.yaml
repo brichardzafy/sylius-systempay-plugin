@@ -1,0 +1,19 @@
+sylius_twig_hooks:
+    hooks:
+        'sylius_admin.payment_method.update.content.form.sections.gateway_configuration.sylius.systempay':
+            settings:
+                template: '@SyliusSystempayPlugin/admin/payment_method/form/settings.html.twig'
+                priority: 0
+        'sylius_admin.payment_method.create.content.form.sections.gateway_configuration.sylius.systempay':
+            settings:
+                template: '@SyliusSystempayPlugin/admin/payment_method/form/settings.html.twig'
+                priority: 0
+#         'sylius_admin.base#stylesheets':
+#             custom_styles:
+#                 template: '@AcmeSyliusExamplePlugin/admin/shared/layout/base/styles.html.twig'
+#                 priority: -100
+
+#         'sylius_admin.base#javascripts':
+#             custom_scripts:
+#                 template: '@AcmeSyliusExamplePlugin/admin/shared/layout/base/scripts.html.twig'
+#                 priority: -100
