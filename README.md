@@ -43,13 +43,20 @@ To enable support for these configurations in the project
 
 3. Now, copy the translation form that you can see here
       ```bash
-       src/Plugin/sylius-systempay-plugin/src/Resources/translations/form.fr.yaml
+       src/Plugin/sylius-systempay-plugin/src/Resources/translations/systempay.admin.form.*.yaml
       ```
-4. As a final step, enable the plugin in the bundle.php file within the project:
-      ```bash
+4. In the `routes/sylius_shop.yaml` file, put it this way to override the complete action :
+      ```yaml
+        sylius_systempay:
+          resource: "@SyliusSystempayPlugin/Resources/config/shop_routing.yaml"
+          prefix: /{_locale}
+          requirements:
+              _locale: ^[A-Za-z]{2,4}(_([A-Za-z]{4}|[0-9]{3}))?(_([A-Za-z]{2}|[0-9]{3}))?$
+      ```      
+5. As a final step, enable the plugin in the `bundle.php` file within the project:
+      ```php
         
         <?php
-
           return [
               ...,
               Sylius\SystempayPlugin\SyliusSystempayPlugin::class => ['all' => true]
