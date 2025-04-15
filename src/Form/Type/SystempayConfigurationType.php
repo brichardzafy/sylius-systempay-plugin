@@ -12,13 +12,15 @@ final class SystempayConfigurationType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
-        $builder->add('public_key', TextType::class)
+        $builder->add('public_key', TextType::class,[
+            'label' => 'sylius_systempay_plugin.form.public_key',
+        ])
         ->add('display_mode', ChoiceType::class, [
             'choices'  => [
-                'Mode embarqué' => 0,
+                //'Mode embarqué' => 0,
                 'Mode pop-in' => 1,
             ],
-            'label' => 'sylius_systempay_plugin.form.public_key',
+            'label' => 'sylius_systempay_plugin.form.mode',
         ])
         ->add('user', TextType::class, [
             'label' => 'sylius_systempay_plugin.form.user',
