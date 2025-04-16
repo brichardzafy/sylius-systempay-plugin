@@ -77,7 +77,7 @@ class PayumController
     public function prepareCaptureAction(Request $request, $tokenValue): Response
     {
         $configuration = $this->requestConfigurationFactory->create($this->orderMetadata, $request);
-        dump($configuration);die();
+        
         /** @var OrderInterface|null $order */
         $order = $this->orderRepository->findOneByTokenValue($tokenValue);
 
@@ -90,7 +90,6 @@ class PayumController
 
         if (null === $payment) {
             $url = $this->router->generate('sylius_shop_order_thank_you');
-
             return new RedirectResponse($url);
         }
 
@@ -110,9 +109,9 @@ class PayumController
         $this->payum->getGateway($token->getGatewayName())->execute($status);
         $paymentResponse= json_decode($_POST['kr-answer']);
         $status->getFirstModel()->setDetails((array) $paymentResponse);
-        dump(json_decode($_POST['kr-answer']));
+        
         $resolveNextRoute = $this->resolveNextRouteRequestFactory->createNewWithModel($status->getFirstModel());
-
+        
         $this->payum->getGateway($token->getGatewayName())->execute($resolveNextRoute);
 
         $this->getHttpRequestVerifier()->invalidate($token);
@@ -122,8 +121,9 @@ class PayumController
             $flashBag = $request->getSession()->getBag('flashes');
             $flashBag->add('info', sprintf('sylius.payment.%s', $status->getValue()));
         }
-
-        return new RedirectResponse($this->router->generate($resolveNextRoute->getRouteName(), $resolveNextRoute->getRouteParameters()));
+        // dump(json_decode($_POST['kr-answer']),$this->router->generate($resolveNextRoute->getRouteName(), $resolveNextRoute->getRouteParameters()));
+        // die();
+        return new RedirectResponse($this->router->generate("sylius_shop_account_custom_order_index", $resolveNextRoute->getRouteParameters()));
     }
 
     private function getTokenFactory(): GenericTokenFactoryInterface

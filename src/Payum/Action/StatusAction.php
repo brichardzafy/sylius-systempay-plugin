@@ -55,8 +55,7 @@ final class StatusAction implements ActionInterface
         $payment->setDetails((array) $paymentResponse);
 //        $request->getModel()->setStorage((array) $paymentResponse);
         $statusPayment= $paymentResponse->orderStatus;
-      //  dump($request,$statusPayment);die();
-        
+
         switch ($statusPayment) {
             case "PAID" : // transaction approuvée ou traitée avec succès
                 $request->markCaptured();

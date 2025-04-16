@@ -79,8 +79,8 @@ class CaptureController extends PayumController
 
         /** @var Generic&GetStatusInterface $status */
         $status = $this->getStatusRequestFactory->createNewWithModel($token);
-        // dump($request);
-        // dump($status);die();
+         dump($request);
+        dump($status);die();
         $this->payum->getGateway($token->getGatewayName())->execute($status);
 
         $resolveNextRoute = $this->resolveNextRouteRequestFactory->createNewWithModel($status->getFirstModel());

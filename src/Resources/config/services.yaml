@@ -44,17 +44,20 @@ services:
     Payum\Bundle\PayumBundle\Controller\CaptureController:
         class: Sylius\SystempayPlugin\Payum\Controller\CaptureController
 
-    Sylius\Component\Resource\Metadata\MetadataInterface:
+    sylius.metadata.resource_registry:
+        class: Sylius\Component\Resource\Metadata\MetadataInterface
+        factory: ["@sylius.resource_registry","get"]
         arguments:
             - 'sylius.order'
+    #override the default  service        
 
-    Payum\Bundle\PayumBundle\Controller\PayumController:
+    sylius.controller.payum:
         class: Sylius\SystempayPlugin\Payum\Controller\PayumController
         public: true
         arguments:
             - '@payum'
             - '@sylius.repository.order'
-            - '@Sylius\Component\Resource\Metadata\MetadataInterface'
+            - '@sylius.metadata.resource_registry'
             - '@sylius.resource_controller.request_configuration_factory'
             - '@sylius.resource_controller.view_handler'
             - '@router'
