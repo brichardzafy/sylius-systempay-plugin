@@ -1,0 +1,5 @@
+sylius_systempay_ipn_action:
+    path: /systempay/ipn
+    methods: [GET]
+    defaults:
+        _controller: Sylius\SystempayPlugin\Controller\SystempayIPNController::ipnAction
