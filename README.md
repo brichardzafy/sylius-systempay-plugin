@@ -44,17 +44,28 @@ To enable support for these configurations in the project
       ```
 
 4. Now, copy the translation form that you can see here
-      ```bash
-       src/Plugin/sylius-systempay-plugin/src/Resources/translations/systempay.admin.form.*.yaml
+
+      ```yaml
+       src/Plugin/sylius-systempay-plugin/src/Resources/translations/systempay_admin_form.*.yaml
       ```
-5. In the `routes/sylius_shop.yaml` file, put it this way to override the complete action :
+      
+ ### Route configurations
+5. In the `routes/sylius_shop.yaml` file, put it this way to override the complete action : 
       ```yaml
         sylius_systempay:
           resource: "@SyliusSystempayPlugin/Resources/config/shop_routing.yaml"
           prefix: /{_locale}
           requirements:
               _locale: ^[A-Za-z]{2,4}(_([A-Za-z]{4}|[0-9]{3}))?(_([A-Za-z]{2}|[0-9]{3}))?$
-      ```      
+      ```
+      
+6. In the `routes.yaml` file, add  also these lines
+
+      ```yaml
+        sylius_systempay_webhook:
+          resource: "@SyliusSystempayPlugin/Resources/config/webhook_routing.yaml"
+      ```
+
 6. As a final step, enable the plugin in the `bundle.php` file within the project:
       ```php
         
