@@ -68,10 +68,13 @@ To enable support for these configurations in the project
 
 6. As a final step, enable the plugin in the `bundle.php` file within the project:
       ```php
-        
         <?php
           return [
               ...,
               Sylius\SystempayPlugin\SyliusSystempayPlugin::class => ['all' => true]
           ];
       ```
+last run this cmd line: 
+  ```bash
+  php bin/console doctrine:migrations:migrate
+  ```
