@@ -4,6 +4,7 @@
 namespace Sylius\SystempayPlugin\Payum\Controller;
 
 
+use FOS\RestBundle\View\View;
 use Payum\Core\Model\GatewayConfigInterface;
 use Payum\Core\Payum;
 use Payum\Core\Request\Generic;
@@ -20,15 +21,17 @@ use Sylius\Component\Core\Model\PaymentInterface;
 use Sylius\Component\Core\Model\PaymentMethodInterface;
 use Sylius\Component\Order\Repository\OrderRepositoryInterface;
 use Sylius\Component\Resource\Metadata\MetadataInterface;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\Flash\FlashBagInterface;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\RouterInterface;
-
-class PayumController
+use Payum\Bundle\PayumBundle\Traits\ControllerTrait;
+class PayumController extends AbstractController
 {
+    use ControllerTrait;
     /** @var Payum */
     private $payum;
 
@@ -52,6 +55,7 @@ class PayumController
 
     /** @var ResolveNextRouteFactoryInterface */
     private $resolveNextRouteRequestFactory;
+
 
     public function __construct(
         Payum $payum,
@@ -104,10 +108,33 @@ class PayumController
 
         $token = $this->getHttpRequestVerifier()->verify($request);
 
+        if ($token->getGatewayName() !== "systempay") {
+            $configuration = $this->requestConfigurationFactory->create($this->orderMetadata, $request);
+
+            $token = $this->getHttpRequestVerifier()->verify($request);
+
+            /** @var Generic&GetStatusInterface $status */
+            $status = $this->getStatusRequestFactory->createNewWithModel($token);
+            $this->payum->getGateway($token->getGatewayName())->execute($status);
+
+            $resolveNextRoute = $this->resolveNextRouteRequestFactory->createNewWithModel($status->getFirstModel());
+            $this->payum->getGateway($token->getGatewayName())->execute($resolveNextRoute);
+
+            $this->getHttpRequestVerifier()->invalidate($token);
+
+            if (PaymentInterface::STATE_NEW !== $status->getValue()) {
+                /** @var FlashBagInterface $flashBag */
+                $flashBag = $request->getSession()->getBag('flashes');
+                $flashBag->add('info', sprintf('sylius.payment.%s', $status->getValue()));
+            }
+            return new RedirectResponse($this->router->generate($resolveNextRoute->getRouteName(), $resolveNextRoute->getRouteParameters()));
+        }
+
         /** @var Generic&GetStatusInterface $status */
         $status = $this->getStatusRequestFactory->createNewWithModel($token);
         $this->payum->getGateway($token->getGatewayName())->execute($status);
         $paymentResponse= json_decode($_POST['kr-answer']);
+        $payment = $status->getModel();
         $status->getFirstModel()->setDetails((array) $paymentResponse);
         
         $resolveNextRoute = $this->resolveNextRouteRequestFactory->createNewWithModel($status->getFirstModel());
@@ -116,14 +143,32 @@ class PayumController
 
         $this->getHttpRequestVerifier()->invalidate($token);
 
-        if (PaymentInterface::STATE_NEW !== $status->getValue()) {
-            /** @var FlashBagInterface $flashBag */
-            $flashBag = $request->getSession()->getBag('flashes');
-            $flashBag->add('info', sprintf('sylius.payment.%s', $status->getValue()));
-        }
         // dump(json_decode($_POST['kr-answer']),$this->router->generate($resolveNextRoute->getRouteName(), $resolveNextRoute->getRouteParameters()));
-        // die();
-        return new RedirectResponse($this->router->generate("sylius_shop_account_custom_order_index", $resolveNextRoute->getRouteParameters()));
+        // die(); call view success
+
+        // return $this->render(
+        //     '@SyliusSystempayPlugin/shop/cardFormPayment.html.twig',
+        //     [
+        //         'formData' => $captureRequest->getDataForm(), 
+        //         'redirectUrl' => $token->getAfterUrl()
+        //     ]
+        // );
+        $orderId = $request->getSession()->get('sylius_order_id', null);
+        $request->getSession()->remove('sylius_order_id');
+        $order = $this->orderRepository->find($orderId);
+       // dump($order);die();
+       return $this->render(
+            '@SyliusSystempayPlugin/shop/Checkout/_confirmation.modal.html.twig',
+            [
+                'order' => $order,
+                'redirectUrl' => $token->getAfterUrl()
+            ]
+        );
+        // return new Response(
+        //     $this->viewHandler->handle($configuration, $resolveNextRoute->getRouteName(), $resolveNextRoute->getRouteParameters(), $request),
+        //     Response::HTTP_OK,
+        //     ['Content-Type' => 'application/json']
+        // );
     }
 
     private function getTokenFactory(): GenericTokenFactoryInterface

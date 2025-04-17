@@ -1,0 +1,25 @@
+ <div class="kl-thank_you position-relative">
+        <div class="kl-deco-thankyou position-absolute">
+            <img src="{{ asset('themes/default-theme/build/images/checkout/deco_thankyou.3317c78d.svg') }}" class="img-fluid" alt="Decoration">
+        </div>
+        <div class="kl-thankyou-card position-relative">
+            <div class="kl-icon text-center">
+                <svg xmlns="http://www.w3.org/2000/svg" width="60" height="60" viewBox="0 0 60 60" fill="none">
+                    <path d="M29.9989 5.61133C25.1898 5.61133 20.4887 7.03739 16.49 9.70919C12.4914 12.381 9.37486 16.1785 7.53449 20.6215C5.69413 25.0646 5.21261 29.9536 6.15082 34.6703C7.08903 39.387 9.40483 43.7195 12.8054 47.1201C16.2059 50.5206 20.5385 52.8364 25.2552 53.7746C29.9719 54.7128 34.8609 54.2313 39.3039 52.3909C43.7469 50.5506 47.5445 47.434 50.2163 43.4354C52.8881 39.4368 54.3141 34.7357 54.3141 29.9266C54.3073 23.4799 51.7433 17.2991 47.1848 12.7406C42.6263 8.1821 36.4456 5.61814 29.9989 5.61133ZM40.6742 25.6387L27.5814 38.7315C27.4077 38.9054 27.2014 39.0434 26.9743 39.1375C26.7472 39.2316 26.5039 39.2801 26.2581 39.2801C26.0123 39.2801 25.7689 39.2316 25.5418 39.1375C25.3147 39.0434 25.1084 38.9054 24.9347 38.7315L19.3235 33.1203C18.9726 32.7693 18.7754 32.2933 18.7754 31.797C18.7754 31.3006 18.9726 30.8246 19.3235 30.4737C19.6745 30.1227 20.1505 29.9255 20.6468 29.9255C21.1432 29.9255 21.6192 30.1227 21.9701 30.4737L26.2581 34.7639L38.0276 22.9921C38.2013 22.8183 38.4077 22.6804 38.6347 22.5864C38.8618 22.4923 39.1051 22.4439 39.3509 22.4439C39.5966 22.4439 39.84 22.4923 40.0671 22.5864C40.2941 22.6804 40.5004 22.8183 40.6742 22.9921C40.848 23.1658 40.9858 23.3721 41.0799 23.5992C41.1739 23.8263 41.2223 24.0696 41.2223 24.3154C41.2223 24.5611 41.1739 24.8045 41.0799 25.0315C40.9858 25.2586 40.848 25.4649 40.6742 25.6387Z" fill="#192856"/>
+                </svg>
+            </div>
+           <h3>Votre commande #{{ order.number }} a été validée.</h3>
+            <div class="kl-content">
+                L’équipe Keep’school vous remercie pour votre commande.
+                Vous recevrez d’ici quelques minutes un email de confirmation contenant
+                le récapitulatif de votre commande et son n° de suivi.
+            </div>
+            <div class="d-flex justify-content-center gap-10 flex-wrap">
+                <a href="{{ path('sylius_shop_homepage') }}" class="btn kl-btn kl-btn-bleuMarine kl-big-btn">Revenir sur le site</a>
+                {# <a href="{{ path('sylius_shop_account_custom_order_index') }}" class="btn kl-btn kl-btn-transparent bordered-bleuMarine border-1 kl-big-btn">Suivre ma commande</a> #}
+            </div>
+        </div>
+        <div class="kl-deco-container position-absolute">
+            <img src="{{ asset('themes/default-theme/build/images/checkout/1-Raphaël.7ff083fb.png') }}" alt="Decoration">
+        </div>
+    </div>
