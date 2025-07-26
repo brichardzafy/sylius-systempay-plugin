@@ -1,5 +1,6 @@
 {
     "name" : "sylius/systempay-plugin",
+    "description": "The plugin helps those developers integrate Systempay payments with Sylius.",
     "type" : "sylius-plugin",
     "keywords": [
         "sylius",
