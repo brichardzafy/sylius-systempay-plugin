@@ -39,7 +39,8 @@
         "symfony/http-client": "^6.4 || ^7.1",
         "symfony/intl": "^6.4 || ^7.1",
         "symfony/web-profiler-bundle": "^6.4 || ^7.1",
-        "symfony/webpack-encore-bundle": "^1.15"
+        "symfony/webpack-encore-bundle": "^1.15",
+        "twig/extra-bundle": "^0.2.2",
     },
     "config": {
         "prepend-autoloader": true,
