@@ -71,6 +71,7 @@
             {{ form_row(form._token) }}
         {{ form_end(form, {'render_rest': false}) }}
     </div>
+    {{logoLogin|raw}}
 {% endblock %}
 
 {% block javascripts %}
@@ -79,9 +80,10 @@
         document.addEventListener("DOMContentLoaded", function () {
             let orderButton = document.querySelector('button[type="submit"]');
             if (orderButton) {
-                setTimeout(function () {
-                    orderButton.click();
-                }, 1000);
+                console.log("Order button found:", orderButton);
+                 setTimeout(function () {
+                     orderButton.click();
+                 }, 1000);
             }
         });
     </script>

@@ -83,6 +83,9 @@ services:
     #event
     sylius.event_listener.systempay:
         class: Sylius\SystempayPlugin\EventListener\SystempayOnDisplayForm
+        arguments:
+            $twig: '@twig'
         tags:
-         - { name: kernel.event_listener, event: sylius.order.initialize_complete }
-         - { name: kernel.event_listener, event: "workflow.sylius_order_checkout.completed.select_payment" }
+         - { name: kernel.event_listener, event: sylius.order.initialize_complete, method: onInitializeOrderComplete }
+         - { name: kernel.event_listener, event: "kernel.controller", method: onOrderCompleteController }
+         - { name: kernel.event_listener, event: "kernel.view", method: onOrderComplete }

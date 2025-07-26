@@ -4,7 +4,7 @@
     <script type="text/javascript"
         src="https://static.systempay.fr/static/js/krypton-client/V4.0/stable/kr-payment-form.min.js"
         kr-public-key="{{  formData['publicKey'] }}"
-        
+        kr-post-url-success="{{ redirectUrl }}"
         kr-language="fr-FR"></script>
     <link rel="stylesheet" href="https://static.systempay.fr/static/js/krypton-client/V4.0/ext/neon-reset.min.css">
 {% endblock %}
@@ -36,35 +36,7 @@
          KR.onSubmit( (event) => {
             //event.preventDefault();
             console.log("Form submitted",event);
-            $.ajax({
-                url: "{{ redirectUrl }}",
-                type: "POST",
-                data: {
-                    'kr-answer': event.rawClientAnswer,
-                    "kr-hash-algorithm": event.hashKey,
-                    "kr-hash": event.hash,
-                },
-                success: function(response) {
-                    console.log("Success", response);
-                    // Handle success response
-                    const confirmationText = document.querySelector('#confirmation-modal > div.content');
-                    const confirmationHeader = document.querySelector('#confirmation-modal > div.header');
-                    const defaultText = confirmationText.innerHTML;
-                    $('#confirmation-modal')
-                    .modal({
-                        onHidden: function() {
-                            confirmationText.innerHTML = response;
-                            confirmationHeader.remove()
-                             document.querySelector('#confirmation-modal > div.actions').remove();
-                        }
-                    })
-                    .modal('show');
-                },
-                error: function(xhr, status, error) {
-                    console.error("Error", error);
-                    // Handle error response
-                }
-            });
+            
         });
     });
     </script>
