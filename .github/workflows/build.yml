@@ -128,10 +128,6 @@ jobs:
                         ${{ runner.os }}-node-${{ matrix.node }}-yarn-
 
             -
-                name: Install JS dependencies
-                run: (cd tests/Application && yarn install)
-
-            -
                 name: Prepare test application database
                 run: |
                     (cd tests/Application && bin/console doctrine:database:create -vvv)
