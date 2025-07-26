@@ -51,7 +51,7 @@ $bundles = [
     League\FlysystemBundle\FlysystemBundle::class => ['all' => true],
     
     Sylius\Abstraction\StateMachine\SyliusStateMachineAbstractionBundle::class => ['all' => true],
-    Acme\SyliusExamplePlugin\AcmeSyliusExamplePlugin::class => ['all' => true],
+    Sylius\SystempayPlugin\SyliusSystempayPlugin::class => ['all' => true],
 ];
 
 if (class_exists(winzou\Bundle\StateMachineBundle\winzouStateMachineBundle::class)) {
