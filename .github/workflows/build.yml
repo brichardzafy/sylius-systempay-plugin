@@ -111,7 +111,9 @@ jobs:
             -
                 name: Install PHP dependencies
                 run: |
-                    composer config audit.block-insecure false
+                    # Temporary CI workaround: Sylius 1.13/1.14 currently requires api-platform/core 2.7,
+                    # so dependency resolution is blocked by these advisory IDs until upstream constraints can be upgraded.
+                    composer config --json audit.ignore '["PKSA-gs8r-6kz6-pp56","PKSA-gnn4-pxdg-q76m"]'
                     composer install --no-interaction
                 env:
                     SYMFONY_REQUIRE: ${{ matrix.symfony }}
