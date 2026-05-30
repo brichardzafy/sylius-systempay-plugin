@@ -110,7 +110,9 @@ jobs:
 
             -
                 name: Install PHP dependencies
-                run: composer install --no-interaction
+                run: |
+                    composer config audit.block-insecure false
+                    composer install --no-interaction
                 env:
                     SYMFONY_REQUIRE: ${{ matrix.symfony }}
 
