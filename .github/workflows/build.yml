@@ -66,6 +66,7 @@ jobs:
 
             -
                 name: Install certificates
+                continue-on-error: true
                 run: symfony server:ca:install
 
             -
